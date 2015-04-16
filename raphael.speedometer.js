@@ -231,6 +231,28 @@ Raphael.fn.speedometer = function(id,width,height){
 						else
 							clearInterval(this);
 					},10)				
+				},
+				scrollToInstantly:function(value){
+					numbers.forEach(function(val){val.reset();});
+					var valueAsString = ""+value;
+					if(value < 0)
+						return;
+					//value goes over the digital scale
+					if(valueAsString.length > digitCount){
+						for (var i=0; i < digitCount;i++){
+							numbers[i].value(9);
+						}
+					}
+					else if(value > 0){	
+						var valueStringLength = valueAsString.length;
+						for (i=0; i < valueAsString.length;i++){
+							numbers[digitCount - valueStringLength]
+								.value(parseInt(valueAsString[i] || 0));
+							if(valueStringLength > 1)
+								valueStringLength--;
+						}
+					}
+					
 				}
 			}
 		}		
@@ -311,7 +333,11 @@ Raphael.fn.speedometer = function(id,width,height){
     	}, 
     	scrollTo:function(value){
     		odometer.scrollTo(value);
-    	}
+    	},
+		
+		scrollToInstantly:function(value){
+			odometer.scrollToInstantly(value);
+		}
     }   
 }
     
